@@ -41,12 +41,17 @@ function getWeatherData (lat, lon, city){
         $("#current_wind").text("Wind speed: " + data.current.wind_speed + " MPH");
         $("#current_humid").text("Wind speed: " + data.current.humidity + " %"); 
         for (i = 1; i < 6; i++) {
-            var date = dayjs.unix(data.daily[i].dt).format("M_DD")
-            $("#future_weather").append('<ul id = "' + date + '" class = "list-group-item">' + dayjs.unix(data.daily[i].dt).format("M/DD") + "</ul>");
-            var dateId = "#" + date;
-            $(dateId).append('<li class = "list-group-item">Temp: ' + data.daily[i].temp.day + " °F</li>");
-            $(dateId).append('<li class = "list-group-item">Wind Speed: ' + data.daily[i].wind_speed + " MPH");
-            $(dateId).append('<li class = "list-group-item">Humidity: '  + data.daily[i].humidity + "  %");
+            var date = dayjs.unix(data.daily[i].dt).format("M/DD/YYYY")
+            var sectionId = "#cd-" + i;
+            var listId = "list-" + i;
+            var listIdRef = "#" + listId;
+            $(sectionId).append('<h3 class = "card-header">' + date + '</h3>');
+            console.log('<ul class = "list-group list-group-flush" id = "'+ listId + '"></ul>');
+            $(sectionId).append('<ul class = "list-group list-group-flush" id = "'+ listId + '"></ul>');
+            $(listIdRef).append('<img src="https://openweathermap.org/img/wn/' + data.daily[i].weather[0].icon + '.png" style="width: 5rem;">');
+            $(listIdRef).append('<li class = "list-group-item">Temp: ' + data.daily[i].temp.day + " °F</li>");
+            $(listIdRef).append('<li class = "list-group-item">Wind Speed: ' + data.daily[i].wind_speed + " MPH");
+            $(listIdRef).append('<li class = "list-group-item">Humidity: '  + data.daily[i].humidity + "  %");
         }; 
     });
 }
