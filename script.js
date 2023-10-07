@@ -1,11 +1,17 @@
-/*
-requestURL = http://api.openweathermap.org/geo/1.0/direct?q={city name}&limit=1&appid=d850a0d7831752d40804f26cf5642a15
-*/
+// Retrieve search history stored in local storage 
+if (JSON.parse(localStorage.getItem("weatherDashboard") === null)){
+    var searchHistory = [];
+  } else {
+    var searchHistory = JSON.parse(localStorage.getItem("weatherDashboard"));
+    for (i = 0; i < searchHistory.length; i++) {
+        $(".search_history").append('<button type="button" class="btn btn-light m-3" value = "'+ searchHistory[i] + '">' + searchHistory[i] + '</li>')
+    }
+  };
 
 // Make an API call upon user's clicking search button
 
 $(function () {
-    $(".btn").on("click",function(event){
+    $("#search_button").on("click",function(event){
         event.preventDefault();
         var buttonClicked = $(event.target);
         var inputCityName = buttonClicked.siblings().eq(0).children().eq(1).children().val();
@@ -18,8 +24,6 @@ $(function () {
     });
 });
 
-// TO DO: Handle the case where the input is empty or there is no matching city name
-
 function getLatLong (cityName) {
     var requestURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&limit=1&appid=d850a0d7831752d40804f26cf5642a15";
     fetch(requestURL)
@@ -27,14 +31,20 @@ function getLatLong (cityName) {
             return response.json();
         })
         .then(function (data) {
-            console.log(data);
             if (data.length === 0) {
                 alert("Couldn't find a city with that name. Please try different city.")
             } else {
-                cityName = data[0].name + ", " + data[0].state;
+                cityName = data[0].name;
+                cityStateName = data[0].name + ", " + data[0].state;
                 latitude = data[0].lat;
                 longitude = data[0].lon;
-                getWeatherData(latitude,longitude, cityName);  
+                getWeatherData(latitude,longitude, cityStateName);
+                console.log(searchHistory.includes(cityName));
+                if (!searchHistory.includes(cityName)){
+                    searchHistory.push(data[0].name);
+                localStorage.setItem("weatherDashboard",JSON.stringify(searchHistory));
+                $(".search_history").append('<button type="button" class="btn btn-light m-3" value = "'+ searchHistory[searchHistory.length - 1] + '">' + searchHistory[searchHistory.length -1] + '</li>'); 
+                };
             }
         });
 }
@@ -70,3 +80,11 @@ function getWeatherData (lat, lon, city){
         }; 
     });
 }
+
+// Make an API call upon user's clicking search history button
+
+$(".btn-light").on("click", function(event){
+    clickTarget = $(event.target);
+    var clickedCityName = clickTarget.val();
+    getLatLong(clickedCityName);
+})
