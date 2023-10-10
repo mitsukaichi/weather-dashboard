@@ -42,7 +42,7 @@ function getLatLong (cityName) {
                 if (!searchHistory.includes(cityName)){
                     searchHistory.push(data[0].name);
                 localStorage.setItem("weatherDashboard",JSON.stringify(searchHistory));
-                $(".search_history").append('<button type="button" class="btn btn-light btn btn-light mx-3 my-2" value = "'+ searchHistory[searchHistory.length - 1] + '">' + searchHistory[searchHistory.length -1] + '</li>'); 
+                $(".search_history").append('<button type="button" class="btn btn-light mx-3 my-2" value = "'+ searchHistory[searchHistory.length - 1] + '">' + searchHistory[searchHistory.length -1] + '</li>'); 
                 };
             }
         });
