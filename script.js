@@ -39,7 +39,6 @@ function getLatLong (cityName) {
                 latitude = data[0].lat;
                 longitude = data[0].lon;
                 getWeatherData(latitude,longitude, cityStateName);
-                console.log(searchHistory.includes(cityName));
                 if (!searchHistory.includes(cityName)){
                     searchHistory.push(data[0].name);
                 localStorage.setItem("weatherDashboard",JSON.stringify(searchHistory));
@@ -84,6 +83,7 @@ function getWeatherData (lat, lon, city){
 // Make an API call upon user's clicking search history button
 
 $(".btn-light").on("click", function(event){
+    console.log("bntlightclick");
     clickTarget = $(event.target);
     var clickedCityName = clickTarget.val();
     getLatLong(clickedCityName);
