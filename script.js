@@ -25,7 +25,7 @@ $(function () {
 });
 
 function getLatLong (cityName) {
-    var requestURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&limit=1&appid=d850a0d7831752d40804f26cf5642a15";
+    var requestURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&limit=1&appid=d850a0d7831752d40804f26cf5642a15";
     fetch(requestURL)
         .then(function (response) {
             return response.json();
